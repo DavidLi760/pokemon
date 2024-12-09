@@ -7,8 +7,11 @@ OBJ     = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(MLX)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LFLAGS)
+
+MLX:
+	make -C mlx
 
 clean:
 	rm -f $(OBJ)

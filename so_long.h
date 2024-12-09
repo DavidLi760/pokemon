@@ -131,6 +131,14 @@ typedef struct	s_var
 	int		bitso3;
 	int		endianso3;
 
+	void	*voi;
+	int		widthvoi;
+	int		heightvoi;
+	char	*addrvoi;
+	int		lenvoi;
+	int		bitvoi;
+	int		endianvoi;
+
 	int		x1;
 	int		y1;
 	int		x2;

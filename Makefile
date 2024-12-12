@@ -2,7 +2,8 @@ NAME    = so_long
 CC      = cc
 CFLAGS  = -Wall -Wextra -Werror -Imlx -g3
 LFLAGS  = -Lmlx -lmlx -lX11 -lXext -lXrandr -lm
-SRC     = main.c
+SRC     =	main.c\
+			parsing.c
 OBJ     = $(SRC:.c=.o)
 
 all: $(NAME)

@@ -23,13 +23,26 @@ int key_press(int keycode, t_var *var)
     if (keycode == 65307)
         close_win(var);
     if (keycode == 'a')
-        var->x1 -= 20;
+        var->a_pressed = 1;
     if (keycode == 'd')
-        var->x1 += 20;
+        var->d_pressed = 1;
     if (keycode == 'w')
-        var->y1 -= 20;
+        var->w_pressed = 1;
     if (keycode == 's')
-        var->y1 += 20;
+        var->s_pressed = 1;
+    return (0);
+}
+
+int key_release(int keycode, t_var *var)
+{
+    if (keycode == 'a')
+        var->a_pressed = 0;
+    if (keycode == 'd')
+        var->d_pressed = 0;
+    if (keycode == 'w')
+        var->w_pressed = 0;
+    if (keycode == 's')
+        var->s_pressed = 0;
     return (0);
 }
 
@@ -48,7 +61,7 @@ int	my_pixel_from_texture(t_var *var, int x, int y, char no)
 
     pixel = 0;
 	if (no == 'n')
-		pixel = var->addrwe2 + (y * var->lenwe2 + x * (var->bitwe2 / 8));
+		pixel = var->addrwe1 + (y * var->lenwe1 + x * (var->bitwe1 / 8));
     if (no == 'a')
 		pixel = var->addrvoi + (y * var->lenvoi + x * (var->bitvoi / 8));
 	color = *(unsigned int *)pixel;
@@ -95,7 +108,17 @@ void	my_put_image_to_image2(t_var *var, int x, int y)
 
 int update(t_var *var)
 {
-    // my_put_image_to_image2(var, var->x1, var->y1);
+    if (var->w_pressed)
+        var->y1 -= 1;
+    if (var->s_pressed)
+        var->y1 += 1;
+    if (var->a_pressed)
+        var->x1 -= 1;
+    if (var->d_pressed)
+        var->x1 += 1;
+    if (var->s_pressed)
+        my_put_image_to_image2(var, var->x1, var->y1 - 1);
+    my_put_image_to_image2(var, var->x1, var->y1);
     my_put_image_to_image(var, var->x1, var->y1);
     mlx_put_image_to_window(var->mlx, var->win, var->img1, 0, 0);
     return (0);
@@ -141,11 +164,16 @@ void    init_img(t_var *var)
     var->addrvoi = mlx_get_data_addr(var->voi, &var->bitvoi, &var->lenvoi, &var->endianvoi);
 }
 
-int	main()
+int	main(int argc, char **argv)
 {
     t_var var;
 
+    if (argc != 2)
+        return (0);
+    (void)argv;
     init(&var);
+    if (!parsing(&var, argv))
+        return (0);
     var.mlx = mlx_init();
     if (!var.mlx)
         return (0);
@@ -154,6 +182,7 @@ int	main()
         return (0);
     init_img(&var);
     mlx_hook(var.win, 2, 1L << 0, key_press, &var);
+    mlx_hook(var.win, 3, 1L << 1, key_release, &var);
     mlx_hook(var.win, 17, 0, close_win, &var);
     mlx_loop_hook(var.mlx, update, &var);
     mlx_loop(var.mlx);

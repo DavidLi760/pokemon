@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include "fcntl.h"
 # include "mlx/mlx.h"
 
 typedef struct	s_var
@@ -144,7 +145,19 @@ typedef struct	s_var
 	int		x2;
 	int		y2;
 
+	int		fd;
+	char 	*temp;
+	char	**split;
+
+	int		w_pressed;
+	int		s_pressed;
+	int		a_pressed;
+	int		d_pressed;
+
+
 	int		dim;
 }	t_var;
+
+int	parsing(t_var *var, char **argv);
 
 #endif

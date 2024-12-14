@@ -170,7 +170,6 @@ int	main(int argc, char **argv)
 
     if (argc != 2)
         return (0);
-    (void)argv;
     init(&var);
     if (!parsing(&var, argv))
         return (0);

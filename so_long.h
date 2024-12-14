@@ -145,9 +145,13 @@ typedef struct	s_var
 	int		x2;
 	int		y2;
 
+	int		max_x;
+	int		max_y;
+
 	int		fd;
 	char 	*temp;
 	char	**split;
+	char	**map;
 
 	int		w_pressed;
 	int		s_pressed;
@@ -158,6 +162,7 @@ typedef struct	s_var
 	int		dim;
 }	t_var;
 
-int	parsing(t_var *var, char **argv);
+int		parsing(t_var *var, char **argv);
+char	**ft_split(char *str, char *set, int i, int j);
 
 #endif

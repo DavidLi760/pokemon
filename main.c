@@ -81,7 +81,7 @@ void	my_put_image_to_image(t_var *var, int x, int y)
 		while (++j < x + 50)
 		{
 			color = my_pixel_from_texture(var, j - x, i - y, 'n');
-			if (j < 1920 && i < 1010 && j > 0 && i > 0 && color != 0x000000)
+			if (j < 1920 && i < 1010 && j > 0 && i > 0 && color != 0x00FF00)
 					my_pixel_put(var, j, i, color);
 		}
 	}
@@ -108,6 +108,8 @@ void	my_put_image_to_image2(t_var *var, int x, int y)
 
 int update(t_var *var)
 {
+    int i = 0;
+    int j = 0;
     if (var->w_pressed)
         var->y1 -= 1;
     if (var->s_pressed)
@@ -116,10 +118,19 @@ int update(t_var *var)
         var->x1 -= 1;
     if (var->d_pressed)
         var->x1 += 1;
-    if (var->s_pressed)
-        my_put_image_to_image2(var, var->x1, var->y1 - 1);
-    my_put_image_to_image2(var, var->x1, var->y1);
-    my_put_image_to_image(var, var->x1, var->y1);
+    // if (var->s_pressed)
+    //     my_put_image_to_image2(var, var->x1, var->y1 - 1);
+    while (i < 1010)
+    {
+        j = 0;
+        while (++j < 1920)
+            if (j >= 959 && j <= 961)
+                my_pixel_put(var, j, i, 0xFFFFFF);
+        i++;
+    }
+    my_put_image_to_image2(var, 430, 455);
+    my_put_image_to_image(var, 430, 455);
+    printf("%d %d\n", var->x1, var->y1);
     mlx_put_image_to_window(var->mlx, var->win, var->img1, 0, 0);
     return (0);
 }
@@ -130,6 +141,10 @@ void    init(t_var *var)
     var->y1 = 0;
     var->x2 = 0;
     var->y2 = 0;
+    var->w_pressed = 0;
+    var->a_pressed = 0;
+    var->d_pressed = 0;
+    var->s_pressed = 0;
 }
 
 void    init_img(t_var *var)
@@ -160,7 +175,7 @@ void    init_img(t_var *var)
     var->addrso2 = mlx_get_data_addr(var->so2, &var->bitso2, &var->lenso2, &var->endianso2);
     var->so3 = mlx_xpm_file_to_image(var->mlx, "xpms/SO3.xpm", &var->widthso3, &var->heightso3);
     var->addrso3 = mlx_get_data_addr(var->so3, &var->bitso3, &var->lenso3, &var->endianso3);
-    var->voi = mlx_xpm_file_to_image(var->mlx, "xpms/Void.xpm", &var->widthvoi, &var->heightvoi);
+    var->voi = mlx_xpm_file_to_image(var->mlx, "xpms/Ground1.xpm", &var->widthvoi, &var->heightvoi);
     var->addrvoi = mlx_get_data_addr(var->voi, &var->bitvoi, &var->lenvoi, &var->endianvoi);
 }
 

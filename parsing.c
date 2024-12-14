@@ -64,6 +64,11 @@ int wall_is_closed(t_var *var)
                 if (var->map[i][j] == '0')
                     return (printf("Error :\nWall is not closed\n"), 0);
             }
+            if (var->map[i][j] == 'P')
+            {
+                var->x1 = j * 50;
+                var->y1 = i * 50;
+            }
             j++;
         }
         i++;

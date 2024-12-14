@@ -144,7 +144,7 @@ typedef struct	s_var
 	int		y1;
 	int		x2;
 	int		y2;
-
+	
 	int		max_x;
 	int		max_y;
 
@@ -157,7 +157,7 @@ typedef struct	s_var
 	int		s_pressed;
 	int		a_pressed;
 	int		d_pressed;
-
+    
 
 	int		dim;
 }	t_var;

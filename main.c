@@ -129,23 +129,21 @@ void	my_put_image_to_image3(t_var *var, int x, int y)
 
 void    show_around(t_var *var, int x, int y)
 {
-    int i = 0;
-    int j = 0;
+    int i = -9;
+    int j = -9;
     
-    while (i < 20)
+    while (i < 10)
     {
-        j = 0;
-        while (j < 19)
+        j = -9;
+        while (j < 9)
         {
-            if (x < 0 || y < 0)
-                my_put_image_to_image3(var, (j - x) * 49, (i - y) * 49);
+            if (x + j < 0 || y + i < 0)
+                my_put_image_to_image3(var, (x + j) * 50, (x + i) * 50);
             else
-                my_put_image_to_image2(var, (j - x) * 49, (i - y) * 49);
+                my_put_image_to_image2(var, (j) * 50, (i) * 50);
             j++;
-            x++;
         }
         i++;
-        y++;
     }
 }
 
@@ -172,7 +170,7 @@ int update(t_var *var)
                 my_pixel_put(var, j, i, 0xFFFFFF);
         i++;
     }
-    show_around(var, (var->x1 / 50) - 9, (var->y1 / 50) - 9);
+    show_around(var, (var->x1 / 50), (var->y1 / 50));
     my_put_image_to_image(var, 9 * 49, 9 * 49);
     printf("%d %d\n", var->x1, var->y1);
     mlx_put_image_to_window(var->mlx, var->win, var->img1, 0, 0);

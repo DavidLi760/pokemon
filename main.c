@@ -62,7 +62,9 @@ int	my_pixel_from_texture(t_var *var, int x, int y, char no)
     pixel = 0;
 	if (no == 'n')
 		pixel = var->addrwe1 + (y * var->lenwe1 + x * (var->bitwe1 / 8));
-    if (no == 'a')
+    if (no == '0')
+		pixel = var->addrgr1 + (y * var->lengr1 + x * (var->bitgr1 / 8));
+	if (no == 'v')
 		pixel = var->addrvoi + (y * var->lenvoi + x * (var->bitvoi / 8));
 	color = *(unsigned int *)pixel;
 	return (color);
@@ -99,17 +101,59 @@ void	my_put_image_to_image2(t_var *var, int x, int y)
 		j = x;
 		while (++j < x + 50)
 		{
-			color = my_pixel_from_texture(var, j - x, i - y, 'a');
+			color = my_pixel_from_texture(var, j - x, i - y, '0');
 			if (j < 1920 && i < 1010 && j > 0 && i > 0)
 					my_pixel_put(var, j, i, color);
 		}
 	}
 }
 
+void	my_put_image_to_image3(t_var *var, int x, int y)
+{
+	int	color;
+	int	i;
+	int	j;
+
+	i = y;
+	while (++i < y + 50)
+	{
+		j = x;
+		while (++j < x + 50)
+		{
+			color = my_pixel_from_texture(var, j - x, i - y, 'v');
+			if (j < 1920 && i < 1010 && j > 0 && i > 0)
+					my_pixel_put(var, j, i, color);
+		}
+    }
+}
+
+void    show_around(t_var *var, int x, int y)
+{
+    int i = 0;
+    int j = 0;
+    
+    while (i < 20)
+    {
+        j = 0;
+        while (j < 19)
+        {
+            if (x < 0 || y < 0)
+                my_put_image_to_image3(var, (j - x) * 49, (i - y) * 49);
+            else
+                my_put_image_to_image2(var, (j - x) * 49, (i - y) * 49);
+            j++;
+            x++;
+        }
+        i++;
+        y++;
+    }
+}
+
 int update(t_var *var)
 {
     int i = 0;
     int j = 0;
+
     if (var->w_pressed)
         var->y1 -= 1;
     if (var->s_pressed)
@@ -128,8 +172,8 @@ int update(t_var *var)
                 my_pixel_put(var, j, i, 0xFFFFFF);
         i++;
     }
-    my_put_image_to_image2(var, 430, 455);
-    my_put_image_to_image(var, 430, 455);
+    show_around(var, (var->x1 / 50) - 9, (var->y1 / 50) - 9);
+    my_put_image_to_image(var, 9 * 49, 9 * 49);
     printf("%d %d\n", var->x1, var->y1);
     mlx_put_image_to_window(var->mlx, var->win, var->img1, 0, 0);
     return (0);
@@ -175,8 +219,10 @@ void    init_img(t_var *var)
     var->addrso2 = mlx_get_data_addr(var->so2, &var->bitso2, &var->lenso2, &var->endianso2);
     var->so3 = mlx_xpm_file_to_image(var->mlx, "xpms/SO3.xpm", &var->widthso3, &var->heightso3);
     var->addrso3 = mlx_get_data_addr(var->so3, &var->bitso3, &var->lenso3, &var->endianso3);
-    var->voi = mlx_xpm_file_to_image(var->mlx, "xpms/Ground1.xpm", &var->widthvoi, &var->heightvoi);
+    var->voi = mlx_xpm_file_to_image(var->mlx, "xpms/Void.xpm", &var->widthvoi, &var->heightvoi);
     var->addrvoi = mlx_get_data_addr(var->voi, &var->bitvoi, &var->lenvoi, &var->endianvoi);
+    var->gr1 = mlx_xpm_file_to_image(var->mlx, "xpms/Ground1.xpm", &var->widthgr1, &var->heightgr1);
+    var->addrgr1 = mlx_get_data_addr(var->gr1, &var->bitgr1, &var->lengr1, &var->endiangr1);
 }
 
 int	main(int argc, char **argv)

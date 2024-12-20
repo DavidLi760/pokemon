@@ -140,6 +140,14 @@ typedef struct	s_var
 	int		bitvoi;
 	int		endianvoi;
 
+	void	*gr1;
+	int		widthgr1;
+	int		heightgr1;
+	char	*addrgr1;
+	int		lengr1;
+	int		bitgr1;
+	int		endiangr1;
+
 	int		x1;
 	int		y1;
 	int		x2;
